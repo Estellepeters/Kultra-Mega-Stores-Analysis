@@ -27,7 +27,7 @@ LIMIT 1;
 **Answer:**  
 | Product Category | Total Sales      |
 |------------------|------------------|
-| Technology       | ₦5,984,248.18 ✅ |
+| Technology       | ₦5,984,248.18  |
 
  **Insight:** Technology is the most profitable category, representing the best-performing product line. This suggests high demand, and KMS should double down on inventory expansion and targeted marketing for tech.
 
