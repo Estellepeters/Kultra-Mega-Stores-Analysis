@@ -7,299 +7,218 @@ Kultra Mega Stores (KMS), headquartered in Lagos, specialises in office supplies
 You have been engaged as a Business Intelligence Analyst to support the Abuja division of KMS. The Business Manager has shared an Excel file containing order data from 2009 to 2012 and has requested that you analyze the data and present your key insights and findings.
 Apply your SQL skills from the DSA Data Analysis class and solve both case scenarios as shared in the document.
 
-# ## Case Scenario I  
-### Question 1: Which product category had the highest sales?
+Tools Used
+- **SQL (MySQL):** For querying and aggregating insights
+- **Excel Pivot Table:** For summarizing sales by categories, regions, and customer segments
+- **Power BI:** To build interactive dashboards and data visuals
 
-**SQL Query:**
+---
+## Case Scenario I
+
+### Q1: Which product category had the highest sales?
+
 ```sql
-SELECT
-    `Product Category`,
-    SUM(Sales) AS total_sales
-FROM
-    kms_cleaned_with_returns
-GROUP BY
-    `Product Category`
-ORDER BY
-    total_sales DESC
+SELECT product_category, SUM(sales) AS total_sales
+FROM public.orders
+GROUP BY product_category
+ORDER BY total_sales DESC
 LIMIT 1;
 ```
-**Result:**
+**Answer:**  
+| Product Category | Total Sales      |
+|------------------|------------------|
+| Technology       | ₦5,984,248.18 ✅ |
 
-| Product Category | Total Sales   |
-|------------------|----------------|
-| Technology        | ₦5,984,248.18  |
+ **Insight:** Technology is the most profitable category, representing the best-performing product line. This suggests high demand, and KMS should double down on inventory expansion and targeted marketing for tech.
 
-**Insight/Interpretation:**  
-The analysis reveals that **Technology** is the leading product category in terms of sales, generating a total of ₦5,984,248.18 between 2009 and 2012. This suggests high market demand, and KMS should continue investing in tech-focused inventory, promotions, or exclusive vendor deals.
+---
+### Q2: Top 3 and Bottom 3 Regions by Sales
 
-# ## Case Scenario I  
-### Question 2: What are the Top 3 and Bottom 3 regions in terms of sales?
-
-**SQL Query:**
 ```sql
-SELECT
-    Region,
-    SUM(Sales) AS total_sales
-FROM
-    kms_cleaned_with_returns
-GROUP BY
-    Region
-ORDER BY
-    total_sales DESC;
+SELECT region, SUM(sales) AS total_sales
+FROM public.orders
+GROUP BY region
+ORDER BY total_sales DESC;
 ```
 
-**Result:**
+**Top 3:**
+| Region  | Sales         |
+|---------|---------------|
+| West    | ₦3,597,549.17 |
+| Ontario | ₦3,063,212.30 |
+| Prarie  | ₦2,837,305.45 |
 
-| Rank | Region            | Total Sales   |
-|------|-------------------|----------------|
-| 1    | Ontario            | ₦2,143,672.10  |
-| 2    | Alberta            | ₦1,809,233.70  |
-| 3    | British Columbia   | ₦1,763,489.45  |
-| ...  | ...                | ...            |
-| 20   | Yukon              | ₦78,920.00     |
-| 21   | Nunavut            | ₦57,800.50     |
-| 22   | Newfoundland       | ₦39,210.40     |
+**Bottom 3:**
+| Region               | Sales         |
+|----------------------|---------------|
+| Yukon                | ₦975,867.12   |
+| Northwest Territories| ₦800,847.06   |
+| Nunavut              | ₦116,376.16   |
 
-**Insight/Interpretation:**  
-Ontario leads in regional sales, followed by Alberta and British Columbia. The bottom 3 regions—Yukon, Nunavut, and Newfoundland—show very low sales, signaling potential underpenetrated markets or logistic challenges that require attention.
+ **Insight:** Marketing efforts and pricing strategies can be optimized for underperforming regions like Nunavut and Yukon.
 
-# ## Case Scenario I  
-### Question 3: What were the total sales of appliances in Ontario?
+---
+### Q3: Total Sales of Appliances in Ontario
 
-**SQL Query:**
 ```sql
-SELECT
-    SUM(Sales) AS appliance_sales_ontario
-FROM
-    kms_cleaned_with_returns
-WHERE
-    Region = 'Ontario'
-    AND `Product Category` = 'Appliances';
+SELECT SUM(sales)
+FROM public.orders
+WHERE product_category = 'Appliances' AND province = 'Ontario';
 ```
 
-**Result:**
+**Answer:** ₦0.00
 
-| Region  | Product Category | Total Sales |
-|---------|------------------|--------------|
-| Ontario | Appliances        | ₦203,871.00  |
+⚠ **Insight:** No appliance sales were recorded in Ontario. This may point to stock availability issues or unmet demand.
 
-**Insight/Interpretation:**  
-Appliance sales in Ontario reached ₦203,871. This is a modest amount compared to total category sales. Management might explore whether this is due to low demand, limited product options, or pricing strategy in that region.
+---
+### Q4: 4.	Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers
 
-# ## Case Scenario I  
-### Question 4: Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers
-
-**SQL Query:**
 ```sql
-SELECT
-    Customer_Name,
-    SUM(Sales) AS total_sales
-FROM
-    kms_cleaned_with_returns
-GROUP BY
-    Customer_Name
-ORDER BY
-    total_sales ASC
+SELECT customer_name, SUM(sales) AS total_sales
+FROM public.orders
+GROUP BY customer_name
+ORDER BY total_sales ASC
 LIMIT 10;
 ```
+**Answer:**
+| Customer Name      | Sales   |
+|--------------------|---------|
+| Jeremy Farry       | ₦85.72  |
+| Natalie DeCherney  | ₦125.90 |
+| Nicole Fjeld       | ₦153.03 |
+| Katrina Edelman    | ₦180.76 |
+| Dorothy Dickinson  | ₦198.08 |
+|Christine Kargatis  | 293.22  |
+|Eric Murdock        | 343.328 |
+|Chris McAfee        | 350.18  |
+|Rick Huthwaite      | 415.82  |
+|Mark Hamilton       | 450.99  |
 
-**Result (sample):**
+** Advise: Improve engagement, promos, or exit non-profitable customers.
+Consider personalized offers like Improve engagement, promos, or exit non-profitable customers.
+--
 
-| Customer Name     | Total Sales |
-|-------------------|--------------|
-| John Obasi        | ₦12,345.67   |
-| Amina Balewa      | ₦14,003.42   |
-| Chinedu Kalu      | ₦15,782.23   |
+###  Q5: 5.	KMS incurred the most shipping cost using which shipping method?
 
-**Insight/Interpretation:**  
-These customers generate the lowest revenue for KMS. Management could target them with personalized offers, bundled discounts, or loyalty programs to boost engagement and spending.
-
-# ## Case Scenario I  
-### Question 5: KMS incurred the most shipping cost using which shipping method?
-
-**SQL Query:**
 ```sql
-SELECT
-    `Ship Mode`,
-    SUM(`Shipping Cost`) AS total_shipping_cost
-FROM
-    kms_cleaned_with_returns
-GROUP BY
-    `Ship Mode`
-ORDER BY
-    total_shipping_cost DESC
-LIMIT 1;
+SELECT ship_mode, SUM(shipping_cost) AS total_cost
+FROM public.orders
+GROUP BY ship_mode
+ORDER BY total_cost DESC;
 ```
 
-**Result:**
+**Answer:**
+| Ship Mode       | Total Shipping Cost |
+|------------------|---------------------|
+| Delivery Truck   | ₦51,971.94         |
 
-| Ship Mode     | Total Shipping Cost |
-|---------------|----------------------|
-| Express Air   | ₦403,230.18          |
+**Insight:** Delivery Truck, despite being the slowest, is the most expensive overall. Explore cost-effective alternatives for low-priority orders.
 
-**Insight/Interpretation:**  
-The most costly shipping method is **Express Air**. While it provides speed, KMS should evaluate whether it's being overused for low-priority orders.
+---
 
-# ## Case Scenario II  
-### Question 6: Who are the most valuable customers, and what products or services do they typically purchase?
+## Case Scenario II
 
-**SQL Query:**
+###  Q6: Most Valuable Customers (by Sales & Profit)
+
 ```sql
-SELECT
-    Customer_Name,
-    SUM(Sales) AS total_sales,
-    SUM(Profit) AS total_profit
-FROM
-    kms_cleaned_with_returns
-GROUP BY
-    Customer_Name
-ORDER BY
-    total_sales DESC
+SELECT customer_name, SUM(sales) AS total_sales, SUM(profit) AS total_profit
+FROM public.orders
+GROUP BY customer_name
+ORDER BY total_sales DESC
 LIMIT 5;
 ```
 
-**Result (sample):**
+**Top Customers:**
+| Name             | Sales         | Profit      |
+|------------------|---------------|-------------|
+| Emily Phan       | ₦117,124.44   | ₦34,005.44  |
+| Deborah Brumfield| ₦97,433.14    | ₦31,121.22  |
 
-| Customer Name     | Sales       | Profit     |
-|-------------------|-------------|------------|
-| Adewale Johnson   | ₦245,000.00 | ₦45,123.00 |
-| Chioma Uzo        | ₦233,450.00 | ₦41,298.00 |
+ **Insight:** Emily Phan and Deborah Brumfield are high-value and high-profit customers — ideal for loyalty programs.
 
-**Insight/Interpretation:**  
-These high-value customers mostly purchased tech gadgets and high-end office furniture. Management should nurture them through tailored services, early product access, or VIP programs.
+---
 
-# ## Case Scenario II  
-### Question 7: Which small business customer had the highest sales?
+###  Q7: Small Business Customer with Highest Sales
 
-**SQL Query:**
 ```sql
-SELECT
-    Customer_Name,
-    SUM(Sales) AS total_sales
-FROM
-    kms_cleaned_with_returns
-WHERE
-    Segment = 'Small Business'
-GROUP BY
-    Customer_Name
-ORDER BY
-    total_sales DESC
+SELECT customer_name, SUM(sales) AS total_sales
+FROM public.orders
+WHERE customer_segment = 'Small Business'
+GROUP BY customer_name
+ORDER BY total_sales DESC
 LIMIT 1;
 ```
 
-**Result:**
+**Answer:**  
+Dennis Kane – ₦75,967.59 
 
-| Customer Name       | Total Sales |
-|---------------------|-------------|
-| SmartTech Solutions | ₦198,900.40 |
+---
 
-**Insight/Interpretation:**  
-SmartTech Solutions leads among small business customers. KMS could deepen this relationship through business-focused packages and longer-term contracts.
+###  Q8: Corporate Customer with Most Orders
 
-# ## Case Scenario II  
-### Question 8: Which Corporate Customer placed the most number of orders?
-
-**SQL Query:**
 ```sql
-SELECT
-    Customer_Name,
-    COUNT(DISTINCT Order_ID) AS order_count
-FROM
-    kms_cleaned_with_returns
-WHERE
-    Segment = 'Corporate'
-GROUP BY
-    Customer_Name
-ORDER BY
-    order_count DESC
+SELECT customer_name, COUNT(DISTINCT order_id) AS total_orders
+FROM public.orders
+WHERE customer_segment = 'Corporate'
+GROUP BY customer_name
+ORDER BY total_orders DESC
 LIMIT 1;
 ```
 
-**Result:**
+**Answer:**  
+Roy Skaria – 18 Orders 
 
-| Customer Name       | Order Count |
-|---------------------|--------------|
-| Global Holdings Inc | 83           |
+---
 
-**Insight/Interpretation:**  
-Global Holdings Inc. is highly engaged with frequent purchases. A dedicated account manager or streamlined ordering could enhance their experience and loyalty
+### 🔹 Q9: Most Profitable Consumer Customer
 
-# ## Case Scenario II  
-### Question 9: Which consumer customer was the most profitable one?
-
-**SQL Query:**
 ```sql
-SELECT
-    Customer_Name,
-    SUM(Profit) AS total_profit
-FROM
-    kms_cleaned_with_returns
-WHERE
-    Segment = 'Consumer'
-GROUP BY
-    Customer_Name
-ORDER BY
-    total_profit DESC
+SELECT customer_name, SUM(profit) AS total_profit
+FROM public.orders
+WHERE customer_segment = 'Consumer'
+GROUP BY customer_name
+ORDER BY total_profit DESC
 LIMIT 1;
 ```
 
-**Result:**
+**Answer:**  
+Emily Phan – ₦34,005.44 
 
-| Customer Name | Total Profit |
-|----------------|---------------|
-| Ifeanyi Okafor | ₦61,320.85    |
+---
 
-**Insight/Interpretation:**  
-Ifeanyi Okafor stands out as the most profitable consumer customer. Consider recognizing them via loyalty perks or feedback opportunities to further engagement.
+###  Q10: Returned Customers and Segment
 
-# ## Case Scenario II  
-### Question 10: Which customer returned items, and what segment do they belong to?
-
-**SQL Query:**
 ```sql
-SELECT DISTINCT
-    k.Customer_Name,
-    k.Segment
-FROM
-    kms_cleaned_with_returns k
-JOIN
-    order_returns r ON k.Order_ID = r.Order_ID;
+SELECT customer_name, customer_segment, COUNT(*) AS return_count
+FROM public.orders
+WHERE status = 'Returned'
+GROUP BY customer_name, customer_segment
+ORDER BY return_count DESC;
 ```
 
-**Result (sample):**
+**Top Returned:**
+| Name            | Segment     | Returns |
+|-----------------|-------------|---------|
+| Erin Creighton  | Corporate   | 10      |
+| Darren Budd     | Consumer    | 10      |
 
-| Customer Name     | Segment    |
-|-------------------|------------|
-| Tunde Bello       | Consumer   |
-| Halima Musa       | Small Business |
+---
 
-**Insight/Interpretation:**  
-Most returns were logged by Consumer and Small Business customers. KMS may need to investigate quality or delivery expectations in these segments.
+###  Q11: Is Shipping Cost Aligned with Priority?
 
-# ## Case Scenario II  
-### Question 11: Does shipping cost align with Order Priority?
-
-**SQL Query:**
 ```sql
-SELECT
-    `Order Priority`,
-    `Ship Mode`,
-    COUNT(*) AS Order_Count,
-    SUM(`Shipping Cost`) AS Total_Shipping_Cost
-FROM
-    kms_cleaned_with_returns
-GROUP BY
-    `Order Priority`, `Ship Mode`
-ORDER BY
-    `Order Priority`, Total_Shipping_Cost DESC;
+SELECT order_priority, ship_mode, AVG(shipping_cost) AS avg_cost
+FROM public.orders
+GROUP BY order_priority, ship_mode
+ORDER BY order_priority, avg_cost DESC;
 ```
 
-**Result (sample):**
+**Insight:**  
+Delivery Truck has the **highest average cost across all order priorities**, including Critical. Express Air (fastest) is **underutilized**.
 
-| Order Priority | Ship Mode     | Orders | Shipping Cost |
-|----------------|---------------|--------|----------------|
-| Critical       | Express Air   | 89     | ₦92,000.00     |
-| High           | Delivery Truck| 120    | ₦64,000.00     |
+ **Recommendation:** Revisit shipping policies. Assign faster methods to critical orders and balance cost for low-priority ones.
 
-**Insight/Interpretation:**  
-Some high-priority orders are being shipped using slower delivery modes like Delivery Truck. KMS should align shipping speed with order urgency to meet service expectations without overspending.
+---
+
+
+
