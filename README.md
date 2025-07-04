@@ -1,5 +1,12 @@
 # Kultra-Mega-Stores-Analysis
 Kultra Mega Stores (KMS) is a Lagos-based company specializing in office supplies and furniture. It serves a wide range of customers, including individual consumers, small retail businesses, and large corporate clients across Lagos and other parts of Nigeria. 
+# Case Study 2: Kultra Mega Stores Inventory
+
+# Company Overview
+Kultra Mega Stores (KMS), headquartered in Lagos, specialises in office supplies and furniture. Its customer base includes individual consumers, small businesses (retail), and large corporate clients (wholesale) across Lagos, Nigeria.
+You have been engaged as a Business Intelligence Analyst to support the Abuja division of KMS. The Business Manager has shared an Excel file containing order data from 2009 to 2012 and has requested that you analyze the data and present your key insights and findings.
+Apply your SQL skills from the DSA Data Analysis class and solve both case scenarios as shared in the document.
+
 # ## Case Scenario I  
 ### Question 1: Which product category had the highest sales?
 
