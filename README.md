@@ -68,7 +68,7 @@ WHERE product_category = 'Appliances' AND province = 'Ontario';
 
 **Answer:** ₦0.00
 
-⚠ **Insight:** No appliance sales were recorded in Ontario. This may point to stock availability issues or unmet demand.
+ **Insight:** No appliance sales were recorded in Ontario. This may point to stock availability issues or unmet demand.
 
 ---
 ### Q4: 4.	Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers
